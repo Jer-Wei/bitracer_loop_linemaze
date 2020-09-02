@@ -51,17 +51,112 @@ function detect_crossroad_type () {
     }
 }
 function drive_car(mode: number) {
+    let move_ticks: number = 0          //直線區域移動次數
+    let total_move_ticks: number = 40   //直線區域預計可移動總次數
+    let turn_pwm: number = 390          //轉彎的PWM值
+    let turn_ticks:number = 0           //轉彎區域移動次數
+    let total_turn_ticks:number = 100   //轉彎區域預計可移動總次數
     reset_trace_err()
     // mode == 0 straight
-    if (mode == 0) {}
+    if (mode == 0) {
+        basic.showString("S")
+        move_ticks = 0
+        while (true) {
+            trace_line(320, 250, 140)
+            IR_new = get_IR_Data()
+            move_ticks += 1
+            if (move_ticks > total_move_ticks && (IR_new[0] > 1200 || IR_new[4] > 1200 || (IR_new[1] < 500 && IR_new[2] < 500 && IR_new[3] < 500))) {
+                basic.showString("X")
+                BitRacer.motorRun(BitRacer.Motors.All, 50)
+                break
+            }
+        }
+        crossroad_type = detect_crossroad_type()
+    }
     // mode == 1 turn left
-    if (mode == 1) {}
+    if (mode == 1) {
+        basic.showString("L")
+        BitRacer.LED(BitRacer.LEDs.LED_L, BitRacer.LEDswitch.on)
+        while (true) {
+            BitRacer.motorRun(BitRacer.Motors.M_R, 0 + turn_pwm)
+            BitRacer.motorRun(BitRacer.Motors.M_L, 0 - turn_pwm)
+            turn_ticks += 1
+            if (turn_ticks >= total_turn_ticks) {
+                if (BitRacer.readIR2(0) > 1200) {
+                    basic.showString("C")
+                    turn_ticks = 0
+                    while (true) {
+                        trace_line(0, 220, 250)
+                        if (line_position <= 0.3 && line_position >= -0.3){
+                            BitRacer.motorRun(BitRacer.Motors.All, 0)
+                            break
+                        }
+                    }
+                    break
+                }
+            }
+        }
+        BitRacer.LED(BitRacer.LEDs.LED_L, BitRacer.LEDswitch.off)
+        basic.showIcon(IconNames.Happy)
+    }
     // mode == 2 turn right
-    if (mode == 2) {}
+    if (mode == 2) {
+        basic.showString("R")
+        BitRacer.LED(BitRacer.LEDs.LED_R, BitRacer.LEDswitch.on)
+        while(true) {
+            BitRacer.motorRun(BitRacer.Motors.M_R, 0 - turn_pwm)
+            BitRacer.motorRun(BitRacer.Motors.M_L, 0 + turn_pwm)
+            turn_ticks += 1            
+            if (turn_ticks >= total_turn_ticks) {
+                if (BitRacer.readIR2(4) > 1200) {
+                    basic.showString("C")
+                    turn_ticks = 0
+                    while (true) {
+                        trace_line(0, 220, 250)
+                        if (line_position <= 0.3 && line_position >= -0.3){
+                            BitRacer.motorRun(BitRacer.Motors.All, 0)
+                            break
+                        }
+                    }
+                    break
+                }
+            }
+        }
+        BitRacer.LED(BitRacer.LEDs.LED_R, BitRacer.LEDswitch.off)
+        basic.showIcon(IconNames.Happy)
+    }
     // mode == 2 U turn
-    if (mode == 3) {}
+    if (mode == 3) {
+        basic.showString("U")
+        BitRacer.LED(BitRacer.LEDs.LED_R, BitRacer.LEDswitch.on)
+        BitRacer.LED(BitRacer.LEDs.LED_L, BitRacer.LEDswitch.on)
+        while(true) {
+            BitRacer.motorRun(BitRacer.Motors.M_R, 0 - turn_pwm)
+            BitRacer.motorRun(BitRacer.Motors.M_L, 0 + turn_pwm)
+            turn_ticks += 1            
+            if (turn_ticks >= total_turn_ticks * 2) {
+                if (BitRacer.readIR2(4) > 1200) {
+                    basic.showString("C")
+                    turn_ticks = 0
+                    while (true) {
+                        trace_line(0, 220, 250)
+                        if (line_position <= 0.3 && line_position >= -0.3){
+                            BitRacer.motorRun(BitRacer.Motors.All, 0)
+                            break
+                        }
+                    }
+                    break
+                }
+            }
+        }
+        BitRacer.LED(BitRacer.LEDs.LED_L, BitRacer.LEDswitch.off)
+        BitRacer.LED(BitRacer.LEDs.LED_R, BitRacer.LEDswitch.off)
+        basic.showIcon(IconNames.Happy)        
+    }
     // mode == 4 stop
-    if (mode == 4) {}
+    if (mode == 4) {
+        BitRacer.motorRun(BitRacer.Motors.All, 0)
+    }
 }
 function reset_trace_err () {
     trace_err = 0
@@ -85,7 +180,7 @@ function get_IR_Data () {
 }
 let PD_Value = 0
 let delta_err = 0
-let line_position = 0
+let line_position: number = 0
 let trace_err_old = 0
 let trace_err = 0
 let goalTimer = 0

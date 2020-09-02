@@ -3,7 +3,8 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "radio": "*"
+        "radio": "*",
+        "BitRacer_block": "github:jer-wei/bitracer_block#70123d02bc1f97eef218483be0d198445508b02d"
     },
     "files": [
         "main.blocks",

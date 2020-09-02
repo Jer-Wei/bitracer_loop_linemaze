@@ -81,19 +81,18 @@ function drive_car(mode: number) {
             BitRacer.motorRun(BitRacer.Motors.M_R, 0 + turn_pwm)
             BitRacer.motorRun(BitRacer.Motors.M_L, 0 - turn_pwm)
             turn_ticks += 1
-            if (turn_ticks >= total_turn_ticks) {
-                if (BitRacer.readIR2(0) > 1200) {
-                    basic.showString("C")
-                    turn_ticks = 0
-                    while (true) {
-                        trace_line(0, 220, 250)
-                        if (line_position <= 0.3 && line_position >= -0.3){
-                            BitRacer.motorRun(BitRacer.Motors.All, 0)
-                            break
-                        }
+            if (turn_ticks >= total_turn_ticks && BitRacer.readIR2(0) > 1200) {
+                basic.showString("C")
+                turn_ticks = 0
+                while (true) {
+                    trace_line(0, 220, 250)
+                    if (line_position <= 0.3 && line_position >= -0.3){
+                        BitRacer.motorRun(BitRacer.Motors.All, 0)
+                        break
                     }
-                    break
                 }
+                break
+                
             }
         }
         BitRacer.LED(BitRacer.LEDs.LED_L, BitRacer.LEDswitch.off)
@@ -107,19 +106,17 @@ function drive_car(mode: number) {
             BitRacer.motorRun(BitRacer.Motors.M_R, 0 - turn_pwm)
             BitRacer.motorRun(BitRacer.Motors.M_L, 0 + turn_pwm)
             turn_ticks += 1            
-            if (turn_ticks >= total_turn_ticks) {
-                if (BitRacer.readIR2(4) > 1200) {
-                    basic.showString("C")
-                    turn_ticks = 0
-                    while (true) {
-                        trace_line(0, 220, 250)
-                        if (line_position <= 0.3 && line_position >= -0.3){
-                            BitRacer.motorRun(BitRacer.Motors.All, 0)
-                            break
-                        }
+            if (turn_ticks >= total_turn_ticks && BitRacer.readIR2(4) > 1200) {
+                basic.showString("C")
+                turn_ticks = 0
+                while (true) {
+                    trace_line(0, 220, 250)
+                    if (line_position <= 0.3 && line_position >= -0.3){
+                        BitRacer.motorRun(BitRacer.Motors.All, 0)
+                        break
                     }
-                    break
                 }
+                break
             }
         }
         BitRacer.LED(BitRacer.LEDs.LED_R, BitRacer.LEDswitch.off)
@@ -134,19 +131,17 @@ function drive_car(mode: number) {
             BitRacer.motorRun(BitRacer.Motors.M_R, 0 - turn_pwm)
             BitRacer.motorRun(BitRacer.Motors.M_L, 0 + turn_pwm)
             turn_ticks += 1            
-            if (turn_ticks >= total_turn_ticks * 2) {
-                if (BitRacer.readIR2(4) > 1200) {
-                    basic.showString("C")
-                    turn_ticks = 0
-                    while (true) {
-                        trace_line(0, 220, 250)
-                        if (line_position <= 0.3 && line_position >= -0.3){
-                            BitRacer.motorRun(BitRacer.Motors.All, 0)
-                            break
-                        }
+            if (turn_ticks >= total_turn_ticks * 2 && BitRacer.readIR2(4) > 1200) {
+                basic.showString("C")
+                turn_ticks = 0
+                while (true) {
+                    trace_line(0, 220, 250)
+                    if (line_position <= 0.3 && line_position >= -0.3){
+                        BitRacer.motorRun(BitRacer.Motors.All, 0)
+                        break
                     }
-                    break
                 }
+                break
             }
         }
         BitRacer.LED(BitRacer.LEDs.LED_L, BitRacer.LEDswitch.off)

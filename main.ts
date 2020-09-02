@@ -1,20 +1,53 @@
 function detect_crossroad_type () {
-    let goaltimer: number = 0
+    let goal_timer: number = 0
     while (true) {
         IR_new = get_IR_Data()
-        // The Goal - return 8
+        // The Goal (8)
         if (IR_new[0] > 1200 && IR_new[4] > 1200 && IR_new[2] > 1200) {
-            goalTimer += 1
+            goal_timer += 1
             if (goalTimer > 50) {
                 return 8
+                break
             }
         } else {
-            goalTimer = 0
+            goal_timer = 0
         }
-        // The + crossroad and the T crossroad
-        if (IR_new[0] < 500) {
-        	
+        // The T crossroad (3) or the + crossroad (7)
+        if (IR_new[0] < 500 && IR_old [0] > 1200 && IR_new[4] < 500 && IR_old [4] > 1200) {
+        	if (IR_old[2] > 1200 && IR_new[2] <500){
+                return 3
+                break
+            } else {
+                return 7
+                break
+            }
         }
+        // The left turn (1) or the straight-left crossroad (5) 
+        if (IR_new[0] < 500 && IR_old[0] > 1200 && IR_old[4] < 500){
+            if (IR_new[2] > 1200) {
+                return 5
+                break
+            } else {
+                return 1
+                break
+            }
+        }
+        // The right turn (2) or the straight-right crossroad (6)
+        if (IR_new[4] < 500 && IR_old[4] > 1200 && IR_new[0] < 500) {
+            if (IR_new[2] > 1200){
+                return 6
+                break
+            } else {
+                return 2
+                break
+            }
+        }
+        // the dead end (4)
+        if (IR_new[2] < 500 && (IR_new[1] < 500 && IR_new[3] < 500) && (IR_old[0] < 500 && IR_old[4] < 500)) {
+            return 4
+            break
+        }
+        IR_old = IR_new
     }
 }
 function reset_trace_err () {

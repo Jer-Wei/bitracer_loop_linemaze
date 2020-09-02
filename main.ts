@@ -50,6 +50,19 @@ function detect_crossroad_type () {
         IR_old = IR_new
     }
 }
+function drive_car(mode: number) {
+    reset_trace_err()
+    // mode == 0 straight
+    if (mode == 0) {}
+    // mode == 1 turn left
+    if (mode == 1) {}
+    // mode == 2 turn right
+    if (mode == 2) {}
+    // mode == 2 U turn
+    if (mode == 3) {}
+    // mode == 4 stop
+    if (mode == 4) {}
+}
 function reset_trace_err () {
     trace_err = 0
     trace_err_old = 0

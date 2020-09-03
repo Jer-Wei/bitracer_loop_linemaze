@@ -15,8 +15,14 @@ function detect_crossroad_type () {
         } else {
             goal_timer = 0
         }
-        if (true) {
-        	
+        if (IR_new[0] < 700 && IR_old[0] > 1200 && IR_new[4] < 700 && IR_old[4] > 1200) {
+            if (IR_old[2] > 1200 && IR_new[2] < 700) {
+                crossroad_type = 3
+                break;
+            } else {
+                crossroad_type = 7
+                break;
+            }
         }
         IR_old = IR_new
     }
@@ -44,7 +50,7 @@ input.onButtonPressed(Button.AB, function () {
     calibrate_IR()
 })
 input.onButtonPressed(Button.B, function () {
-    testIR()
+	
 })
 function testIR () {
     while (true) {
@@ -66,8 +72,8 @@ let IR: number[] = []
 let IR_new: number[] = []
 let IR_old: number[] = []
 let crossroad_type: number = []
-let move_ticks = 0
 let tuen_ticks = 0
+let move_ticks = 0
 crossroad_type = 0
 let goal_timer: number
 let PD_Value: number

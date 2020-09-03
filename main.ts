@@ -7,7 +7,7 @@ function detect_crossroad_type () {
             goal_timer += 1
             if (goal_timer > 50) {
                 crossroad_type = 8
-                break
+                break;
             }
         } else {
             goal_timer = 0
@@ -16,36 +16,36 @@ function detect_crossroad_type () {
         if (IR_new[0] < 500 && IR_old [0] > 1200 && IR_new[4] < 500 && IR_old [4] > 1200) {
         	if (IR_old[2] > 1200 && IR_new[2] <500){
                 crossroad_type = 3
-                break
+                break;
             } else {
                 crossroad_type = 7
-                break
+                break;
             }
         }
         // 左轉(1)或左卜(5) 
         if (IR_new[0] < 500 && IR_old[0] > 1200 && IR_old[4] < 500){
             if (IR_new[2] > 1200) {
                 crossroad_type = 5
-                break
+                break;
             } else {
                 crossroad_type = 1
-                break
+                break;
             }
         }
         // 右轉(2)或右卜(6)
         if (IR_new[4] < 500 && IR_old[4] > 1200 && IR_new[0] < 500) {
             if (IR_new[2] > 1200){
                 crossroad_type = 6
-                break
+                break;
             } else {
                 crossroad_type = 2
-                break
+                break;
             }
         }
         // 死路(4)
         if (IR_new[2] < 500 && (IR_new[1] < 500 && IR_new[3] < 500) && (IR_old[0] < 500 && IR_old[4] < 500)) {
             crossroad_type = 4
-            break
+            break;
         }
         IR_old = IR_new
     }
@@ -68,7 +68,7 @@ function drive_car(mode: number) {
             if (move_ticks > total_move_ticks && (IR_new[0] > 1200 || IR_new[4] > 1200 || (IR_new[1] < 500 && IR_new[2] < 500 && IR_new[3] < 500))) {
                 basic.showString("X")
                 BitRacer.motorRun(BitRacer.Motors.All, 50)
-                break
+                break;
             }
         }
         detect_crossroad_type()
@@ -88,7 +88,7 @@ function drive_car(mode: number) {
                     trace_line(0, 220, 250)
                     if (line_position <= 0.3 && line_position >= -0.3){
                         BitRacer.motorRun(BitRacer.Motors.All, 0)
-                        break
+                        break;
                     }
                 }
                 break
@@ -113,10 +113,10 @@ function drive_car(mode: number) {
                     trace_line(0, 220, 250)
                     if (line_position <= 0.3 && line_position >= -0.3){
                         BitRacer.motorRun(BitRacer.Motors.All, 0)
-                        break
+                        break;
                     }
                 }
-                break
+                break;
             }
         }
         BitRacer.LED(BitRacer.LEDs.LED_R, BitRacer.LEDswitch.off)
@@ -138,10 +138,10 @@ function drive_car(mode: number) {
                     trace_line(0, 220, 250)
                     if (line_position <= 0.3 && line_position >= -0.3){
                         BitRacer.motorRun(BitRacer.Motors.All, 0)
-                        break
+                        break;
                     }
                 }
-                break
+                break;
             }
         }
         BitRacer.LED(BitRacer.LEDs.LED_L, BitRacer.LEDswitch.off)

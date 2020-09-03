@@ -2,11 +2,11 @@ function detect_crossroad_type () {
     let goal_timer: number = 0
     while (true) {
         IR_new = get_IR_Data()
-        // The Goal (8)
+        /* 終點 (8) */
         if (IR_new[0] > 1200 && IR_new[4] > 1200 && IR_new[2] > 1200) {
             goal_timer += 1
-            if (goalTimer > 50) {
-                return 8
+            if (goal_timer > 50) {
+                crossroad_type = 8
                 break
             }
         } else {
@@ -15,36 +15,36 @@ function detect_crossroad_type () {
         // The T crossroad (3) or the + crossroad (7)
         if (IR_new[0] < 500 && IR_old [0] > 1200 && IR_new[4] < 500 && IR_old [4] > 1200) {
         	if (IR_old[2] > 1200 && IR_new[2] <500){
-                return 3
+                crossroad_type = 3
                 break
             } else {
-                return 7
+                crossroad_type = 7
                 break
             }
         }
         // The left turn (1) or the straight-left crossroad (5) 
         if (IR_new[0] < 500 && IR_old[0] > 1200 && IR_old[4] < 500){
             if (IR_new[2] > 1200) {
-                return 5
+                crossroad_type = 5
                 break
             } else {
-                return 1
+                crossroad_type = 1
                 break
             }
         }
         // The right turn (2) or the straight-right crossroad (6)
         if (IR_new[4] < 500 && IR_old[4] > 1200 && IR_new[0] < 500) {
             if (IR_new[2] > 1200){
-                return 6
+                crossroad_type = 6
                 break
             } else {
-                return 2
+                crossroad_type = 2
                 break
             }
         }
         // the dead end (4)
         if (IR_new[2] < 500 && (IR_new[1] < 500 && IR_new[3] < 500) && (IR_old[0] < 500 && IR_old[4] < 500)) {
-            return 4
+            crossroad_type = 4
             break
         }
         IR_old = IR_new
@@ -71,7 +71,7 @@ function drive_car(mode: number) {
                 break
             }
         }
-        crossroad_type = detect_crossroad_type()
+        detect_crossroad_type()
     }
     // mode == 1 turn left
     if (mode == 1) {
@@ -178,7 +178,6 @@ let delta_err = 0
 let line_position: number = 0
 let trace_err_old = 0
 let trace_err = 0
-let goalTimer = 0
 let base_turn_speeed = 0
 let base_speed = 0
 let Kd = 0

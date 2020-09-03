@@ -1,3 +1,18 @@
+// 偵測路口型態，傳會變數crossroad_type路口型態值
+// 1:左轉, 2: 
+// 3:
+// 4:
+// 5:
+// 6:
+// 7:
+// 8: 終點
+// 
+function detect_crossroad_type () {
+    goal_timer = 0
+    while (true) {
+        IR_new = get_IR_Data()
+    }
+}
 function trace_line (base_speed: number, Kp: number, Kd: number) {
     line_position = BitRacer.readLine()
     trace_err = 0 - line_position
@@ -21,6 +36,9 @@ input.onButtonPressed(Button.AB, function () {
     calibrate_IR()
 })
 input.onButtonPressed(Button.B, function () {
+    testIR()
+})
+function testIR () {
     while (true) {
         IR_new = get_IR_Data()
         serial.writeNumbers(IR_new)
@@ -28,7 +46,7 @@ input.onButtonPressed(Button.B, function () {
         serial.writeValue("line", line_position)
         basic.pause(500)
     }
-})
+}
 function get_IR_Data () {
     IR = []
     for (let IR_no = 0; IR_no <= 4; IR_no++) {
@@ -44,6 +62,7 @@ let trace_err = 0
 let line_position = 0
 let IR_new: number[] = []
 let goal_timer = 0
+goal_timer = 0
 let tuen_ticks = 0
 let move_ticks = 0
 let crossroad_type = 0

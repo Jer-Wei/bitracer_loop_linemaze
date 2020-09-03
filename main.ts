@@ -62,6 +62,27 @@ function trace_line (base_speed: number, Kp: number, Kd: number) {
     BitRacer.motorRun(BitRacer.Motors.M_L, base_speed - PD_Value)
     BitRacer.motorRun(BitRacer.Motors.M_R, base_speed + PD_Value)
 }
+input.onButtonPressed(Button.A, function () {
+    // 搜尋迷宮
+    basic.showIcon(IconNames.Rabbit)
+    basic.pause(1000)
+    drive_car(0)
+    while (true) {
+        if (crossroad_type == 1 || crossroad_type == 5 || crossroad_type == 3 || crossroad_type == 7) {
+            drive_car(1)
+        }
+        if (crossroad_type == 2) {
+            drive_car(2)
+        }
+        if (crossroad_type == 4) {
+            drive_car(3)
+        }
+        if (crossroad_type == 8) {
+            drive_car(4)
+            break;
+        }
+    }
+})
 function drive_car (mode: number) {
     reset_trace_err()
     // mode == 0 直走
@@ -168,7 +189,7 @@ input.onButtonPressed(Button.AB, function () {
     // 雙輪PWM=250移動600ms
     BitRacer.motorRun(BitRacer.Motors.All, 250)
     basic.pause(600)
-    BitRacer.motorRun(BitRacer.Motors.All, 0)   
+    BitRacer.motorRun(BitRacer.Motors.All, 0)
     BitRacer.CalibrateEnd(BitRacer.LineColor.White)
     basic.showIcon(IconNames.Heart)
     music.playTone(262, music.beat(BeatFraction.Half))
@@ -181,26 +202,23 @@ function get_IR_Data () {
     }
     return IR
 }
-// 直線區域移動次數
-let move_ticks = 0
-// 直線區域預計可移動總次數
-const total_move_ticks:number = 40
-// 轉彎區域移動次數
 let turn_ticks = 0
-// 轉彎區域預計可移動總次數
-const total_turn_ticks: number = 100
-// 轉彎的PWM值
-const turn_pwm: number = 390
+let move_ticks = 0
 let PD_Value = 0
-let line_position:number = 0
-let trace_err_old:number = 0
-let trace_err:number = 0
-let delta_err:number = 0
+let delta_err = 0
+let line_position = 0
+let trace_err_old = 0
+let trace_err = 0
 let IR_old: number[] = []
+let crossroad_type = 0
+let goal_timer = 0
 let IR_new: number[] = []
-let crossroad_type: number = 0
-let goal_timer:number = 0
-let Kp:number = 0
-let Kd:number = 0
-let base_speed:number = 0
-
+let turn_pwm = 0
+let total_turn_ticks = 0
+let total_move_ticks = 0
+let base_speed = 0
+let Kp = 0
+let Kd = 0
+total_move_ticks = 40
+total_turn_ticks = 100
+turn_pwm = 390

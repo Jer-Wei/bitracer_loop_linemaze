@@ -1,16 +1,24 @@
 // 偵測路口型態，傳會變數crossroad_type路口型態值
-// 1:左轉, 2: 
-// 3:
-// 4:
-// 5:
-// 6:
-// 7:
-// 8: 終點
-// 
+// 0 = 直線, 1 = 左彎, 2 = 右彎, 3 = T字,
+// 4 = 死路, 5 = 左卜, 6 = 右卜, 7 = 十字,
+// 8 = 終點
 function detect_crossroad_type () {
-    goal_timer = 0
     while (true) {
         IR_new = get_IR_Data()
+        if (IR_new[0] > 1200 && IR_new[2] > 1200 && IR_new[4] > 1200) {
+            goal_timer += 1
+            if (goal_timer > 55) {
+                goal_timer = 0
+                crossroad_type = 8
+                break;
+            }
+        } else {
+            goal_timer = 0
+        }
+        if (true) {
+        	
+        }
+        IR_old = IR_new
     }
 }
 function trace_line (base_speed: number, Kp: number, Kd: number) {
@@ -55,18 +63,24 @@ function get_IR_Data () {
     return IR
 }
 let IR: number[] = []
-let PD_Value = 0
-let trace_err_old = 0
-let delta_err = 0
-let trace_err = 0
-let line_position = 0
 let IR_new: number[] = []
-let goal_timer = 0
-goal_timer = 0
-let tuen_ticks = 0
-let move_ticks = 0
-let crossroad_type = 0
 let IR_old: number[] = []
+let crossroad_type: number = []
+let move_ticks = 0
+let tuen_ticks = 0
+crossroad_type = 0
+let goal_timer: number
+let PD_Value: number
+let delta_err: number
+let trace_err_old: number
+let trace_err: number
+let line_position: number
+line_position = 0
+trace_err = 0
+trace_err_old = 0
+delta_err = 0
+PD_Value = 0
+IR_old = []
 IR_new = []
 let total_move_ticks = 40
 let total_turn_ticks = 100

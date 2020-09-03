@@ -2,7 +2,7 @@ function detect_crossroad_type () {
     let goal_timer: number = 0
     while (true) {
         IR_new = get_IR_Data()
-        /* 終點 (8) */
+        // 終點(8)
         if (IR_new[0] > 1200 && IR_new[4] > 1200 && IR_new[2] > 1200) {
             goal_timer += 1
             if (goal_timer > 50) {
@@ -12,7 +12,7 @@ function detect_crossroad_type () {
         } else {
             goal_timer = 0
         }
-        // The T crossroad (3) or the + crossroad (7)
+        // T字(3)或十字(7)
         if (IR_new[0] < 500 && IR_old [0] > 1200 && IR_new[4] < 500 && IR_old [4] > 1200) {
         	if (IR_old[2] > 1200 && IR_new[2] <500){
                 crossroad_type = 3
@@ -22,7 +22,7 @@ function detect_crossroad_type () {
                 break
             }
         }
-        // The left turn (1) or the straight-left crossroad (5) 
+        // 左轉(1)或左卜(5) 
         if (IR_new[0] < 500 && IR_old[0] > 1200 && IR_old[4] < 500){
             if (IR_new[2] > 1200) {
                 crossroad_type = 5
@@ -32,7 +32,7 @@ function detect_crossroad_type () {
                 break
             }
         }
-        // The right turn (2) or the straight-right crossroad (6)
+        // 右轉(2)或右卜(6)
         if (IR_new[4] < 500 && IR_old[4] > 1200 && IR_new[0] < 500) {
             if (IR_new[2] > 1200){
                 crossroad_type = 6
@@ -42,7 +42,7 @@ function detect_crossroad_type () {
                 break
             }
         }
-        // the dead end (4)
+        // 死路(4)
         if (IR_new[2] < 500 && (IR_new[1] < 500 && IR_new[3] < 500) && (IR_old[0] < 500 && IR_old[4] < 500)) {
             crossroad_type = 4
             break
@@ -57,7 +57,7 @@ function drive_car(mode: number) {
     let turn_ticks:number = 0           //轉彎區域移動次數
     let total_turn_ticks:number = 100   //轉彎區域預計可移動總次數
     reset_trace_err()
-    // mode == 0 straight
+    // mode == 0 直走
     if (mode == 0) {
         basic.showString("S")
         move_ticks = 0
@@ -73,7 +73,7 @@ function drive_car(mode: number) {
         }
         detect_crossroad_type()
     }
-    // mode == 1 turn left
+    // mode == 1 左轉
     if (mode == 1) {
         basic.showString("L")
         BitRacer.LED(BitRacer.LEDs.LED_L, BitRacer.LEDswitch.on)
@@ -98,7 +98,7 @@ function drive_car(mode: number) {
         BitRacer.LED(BitRacer.LEDs.LED_L, BitRacer.LEDswitch.off)
         basic.showIcon(IconNames.Happy)
     }
-    // mode == 2 turn right
+    // mode == 2 右轉
     if (mode == 2) {
         basic.showString("R")
         BitRacer.LED(BitRacer.LEDs.LED_R, BitRacer.LEDswitch.on)
@@ -122,7 +122,7 @@ function drive_car(mode: number) {
         BitRacer.LED(BitRacer.LEDs.LED_R, BitRacer.LEDswitch.off)
         basic.showIcon(IconNames.Happy)
     }
-    // mode == 2 U turn
+    // mode == 2 迴轉
     if (mode == 3) {
         basic.showString("U")
         BitRacer.LED(BitRacer.LEDs.LED_R, BitRacer.LEDswitch.on)
@@ -148,7 +148,7 @@ function drive_car(mode: number) {
         BitRacer.LED(BitRacer.LEDs.LED_R, BitRacer.LEDswitch.off)
         basic.showIcon(IconNames.Happy)        
     }
-    // mode == 4 stop
+    // mode == 4 停止
     if (mode == 4) {
         BitRacer.motorRun(BitRacer.Motors.All, 0)
     }
